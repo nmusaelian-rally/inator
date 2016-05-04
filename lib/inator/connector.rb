@@ -2,6 +2,7 @@ require 'uri'
 require 'base64'
 require 'json'
 require 'pp'
+require 'yaml'
 require 'uri'
 require 'faraday'
 
