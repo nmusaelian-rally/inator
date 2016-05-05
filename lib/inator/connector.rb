@@ -9,13 +9,14 @@ require 'faraday'
 module Inator
   
   class Connector
-    attr_reader :base_url, :user, :password, :connection
+    attr_reader :base_url, :user, :password, :connection, :debug
     def initialize(config={})
       @base_url   = config['base_url']
       @user       = config['user']
       @password   = config['password']
       credentials = Base64.encode64("%s:%s" % [@user, @password])
       @basic_auth = "Basic %s" % credentials
+      @debug = config['debug']
       
       @connection = Faraday.new(:url => @base_url) do |faraday|
         Faraday.request :url_encoded
@@ -40,11 +41,15 @@ module Inator
         end
       end
       begin
-        puts "Status: #{response.headers['Status']}"
+        if self.debug
+          puts '_'*20
+          puts response.inspect
+          puts '_'*20
+        end
       rescue => e
         puts e.message
       end
-        return response.headers, response.body
+        return response.status, response.headers, response.body
     end
   end
   
