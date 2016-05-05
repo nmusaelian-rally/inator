@@ -16,7 +16,7 @@ module Inator
       @password   = config['password']
       credentials = Base64.encode64("%s:%s" % [@user, @password])
       @basic_auth = "Basic %s" % credentials
-      @debug = config['debug']
+      @debug = config['debug'] || false
       
       @connection = Faraday.new(:url => @base_url) do |faraday|
         Faraday.request :url_encoded
