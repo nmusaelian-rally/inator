@@ -23,5 +23,22 @@ describe Inator do
         expect(total_result_count).to be > 0
       end
     end
+    context "github connection" do
+      before :each do
+        @github_connector = Inator::Connector.new(YAML.load_file('./spec/configs/github.yml'))
+        @github_endpoint = "repos/RallyCommunity/open-closed-defects-chart/commits"
+      end
+      it "returns all commits" do
+        status, headers, body = @github_connector.make_request(:get, @github_endpoint)
+        result = JSON.parse(body)
+        expect(result.length).to eql(6)
+      end
+      it "limit results by date" do
+        since = {since: '2015-03-01'}
+        status, headers, body = @github_connector.make_request(:get, @github_endpoint, since)
+        date_limited_result = JSON.parse(body)
+        expect(date_limited_result.length).to eql(2)
+      end
+    end
   end
 end
