@@ -34,6 +34,7 @@ module Inator
         puts "issuing a #{method.to_s.upcase} request for endpoint: #{endpoint}"
                       
         req.url(endpoint)
+
         req.headers['Content-Type'] = 'application/json'
         req.headers['Authorization'] = @basic_auth
         if data
