@@ -39,6 +39,12 @@ describe Inator do
         date_limited_result = JSON.parse(body)
         expect(date_limited_result.length).to eql(2)
       end
+      it "limit results by date and time" do
+        since = {since: '2015-03-24T13:44:10Z'}
+        status, headers, body = @github_connector.make_request(:get, @github_endpoint, since)
+        date_limited_result = JSON.parse(body)
+        expect(date_limited_result.length).to eql(1)
+      end
     end
   end
 end
